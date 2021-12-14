@@ -38,7 +38,7 @@ class InterfaceWS {
             const date = new Date();
             const year = date.getFullYear();
 
-            const result = await this.communication("games", `&dates=${year}-01-01,${year}-12-31&page_size=20`);
+            const result = await this.communication("games", `&dates=${year}-01-01,${year}-12-31&page_size=21&ordering=-rating`);
 
             return result;
       };

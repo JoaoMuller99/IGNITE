@@ -6,6 +6,7 @@ import Head from "next/head";
 // Components
 import List from "../components/Games/List";
 
+// WS
 import commWS from "../interface/interface_ws";
 
 const Home: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -24,6 +25,10 @@ const Home: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) =
 
 export const getStaticProps: GetStaticProps = async () => {
       const result = await commWS.current_games();
+
+      interface Game {
+            id: number;
+      }
 
       return {
             props: {

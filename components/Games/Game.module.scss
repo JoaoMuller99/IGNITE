@@ -4,6 +4,27 @@
       border-radius: 30px;
       text-align: center;
       font-size: 0;
+
+      .imgContainer {
+            position: relative;
+            cursor: pointer;
+      }
+
+      span {
+            &:first-child {
+                  z-index: 10;
+            }
+      }
+
+      span:not(:first-child) {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+      }
+
+      span span {
+            position: relative !important;
+      }
 }
 
 .h2 {
@@ -14,9 +35,10 @@
       font-size: 1rem;
 }
 
-.img {
-      width: 100% !important;
+.img,
+.screenshots {
       object-fit: cover;
-      cursor: pointer;
-      display: block;
+}
+
+.screenshots {
 }
