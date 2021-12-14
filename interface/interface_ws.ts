@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 class InterfaceWS {
       DEBUG: boolean;
@@ -21,12 +21,12 @@ class InterfaceWS {
             try {
                   const data = await axios.get(_url_);
 
-                  if (data.statusText.toLowerCase() == "ok") {
+                  if (data.statusText.toLowerCase() === "ok") {
                         return { error: false, data: [...data.data.results] };
                   } else {
                         throw Error("Could not fetch the data!");
                   }
-            } catch (error: any) {
+            } catch (error: AxiosError | any) {
                   return {
                         data: error.message,
                         error: true,
