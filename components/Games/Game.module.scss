@@ -16,14 +16,10 @@
             }
       }
 
-      span:not(:first-child) {
+      .carouselContainer {
             position: absolute !important;
             top: 0;
             left: 0;
-      }
-
-      span span {
-            position: relative !important;
       }
 }
 
@@ -38,7 +34,4 @@
 .img,
 .screenshots {
       object-fit: cover;
-}
-
-.screenshots {
 }

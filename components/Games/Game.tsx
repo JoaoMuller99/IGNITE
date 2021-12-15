@@ -24,14 +24,33 @@ interface Screenshots {
 const Game = (props: GameProps) => {
       const imgContainer = useRef<HTMLDivElement>(null);
 
-      const handleMouseEnter = () => {
-            const timeline = gsap.timeline();
+      const handleFinish = () => {
             const length = (imgContainer.current?.children || []).length;
 
             for (let i = 0; i < length; i++) {
-                  timeline.to(imgContainer.current?.children[i]!, { opacity: 0, duration: 1 });
-                  timeline.to(imgContainer.current?.children[i]!, { opacity: 1, duration: 1, delay: 1 * (i + 1) });
+                  gsap.to(imgContainer.current?.children[i]!, { opacity: 1, duration: 0 });
             }
+      };
+
+      const handleMouseEnter = () => {
+            const timeline = gsap.timeline({ onComplete: handleFinish });
+            const length = (imgContainer.current?.children || []).length;
+
+            timeline.to(imgContainer.current?.children[0]!, { opacity: 0, duration: 0 });
+
+            for (let i = 1; i < length - 1; i++) {
+                  timeline.to(imgContainer.current?.children[i]!, { opacity: 0, duration: 1.3 });
+            }
+
+            timeline.to(imgContainer.current?.children[length - 1]!, { opacity: 1, duration: 1.3 });
+
+            const killTimeline = () => {
+                  timeline.kill();
+                  handleFinish();
+                  imgContainer.current?.removeEventListener("mouseleave", killTimeline);
+            };
+
+            imgContainer.current?.addEventListener("mouseleave", killTimeline);
       };
 
       return (
@@ -40,9 +59,13 @@ const Game = (props: GameProps) => {
                   <p className={styles.p}>{props.released}</p>
                   <div ref={imgContainer} className={styles.imgContainer} onMouseEnter={handleMouseEnter}>
                         <Image className={styles.img} src={props.backgroundImage} alt="Game Image" width="1024" height="720" />
-                        {props.screenshots.map((screenshot: Screenshots) => (
-                              <Image className={styles.screenshots} key={screenshot.id} src={screenshot.image} alt="Screenshot" width="1024" height="720" />
-                        ))}
+                        {props.screenshots.map((screenshot: Screenshots, index: number) => {
+                              return (
+                                    <div key={screenshot.id} className={styles.carouselContainer} style={{ zIndex: 9 - index }}>
+                                          <Image className={styles.screenshots} src={screenshot.image} alt="Screenshot" width="1024" height="720" />
+                                    </div>
+                              );
+                        })}
                   </div>
             </motion.div>
       );
