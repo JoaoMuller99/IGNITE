@@ -33,7 +33,7 @@ const Game = (props: GameProps) => {
       };
 
       const handleMouseEnter = () => {
-            const timeline = gsap.timeline({ onComplete: handleFinish });
+            const timeline = gsap.timeline();
             const length = (imgContainer.current?.children || []).length;
 
             timeline.to(imgContainer.current?.children[0]!, { opacity: 0, duration: 0 });
@@ -41,8 +41,6 @@ const Game = (props: GameProps) => {
             for (let i = 1; i < length - 1; i++) {
                   timeline.to(imgContainer.current?.children[i]!, { opacity: 0, duration: 1.3 });
             }
-
-            timeline.to(imgContainer.current?.children[length - 1]!, { opacity: 1, duration: 1.3 });
 
             const killTimeline = () => {
                   timeline.kill();
