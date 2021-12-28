@@ -26,14 +26,11 @@ const Home: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) =
 export const getStaticProps: GetStaticProps = async () => {
       const result = await commWS.current_games();
 
-      interface Game {
-            id: number;
-      }
-
       return {
             props: {
                   currentGames: result,
             },
+            revalidate: 86400, //24h
       };
 };
 

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 // Libraries
 import { motion } from "framer-motion";
@@ -23,6 +24,7 @@ interface Screenshots {
 
 const Game = (props: GameProps) => {
       const imgContainer = useRef<HTMLDivElement>(null);
+      const router = useRouter();
 
       const handleFinish = () => {
             const length = (imgContainer.current?.children || []).length;
@@ -30,6 +32,10 @@ const Game = (props: GameProps) => {
             for (let i = 0; i < length; i++) {
                   gsap.to(imgContainer.current?.children[i]!, { opacity: 1, duration: 0 });
             }
+      };
+
+      const handleClick = (gameID: number) => {
+            router.push(`./game/${gameID}`);
       };
 
       const handleMouseEnter = () => {
@@ -55,7 +61,7 @@ const Game = (props: GameProps) => {
             <motion.div className={styles.container} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <h2 className={styles.h2}>{props.name}</h2>
                   <p className={styles.p}>{props.released}</p>
-                  <div ref={imgContainer} className={styles.imgContainer} onMouseEnter={handleMouseEnter}>
+                  <div ref={imgContainer} className={styles.imgContainer} onClick={() => handleClick(props.id)} onMouseEnter={handleMouseEnter}>
                         <Image className={styles.img} src={props.backgroundImage} alt="Game Image" width="1024" height="720" />
                         {props.screenshots.map((screenshot: Screenshots, index: number) => {
                               return (

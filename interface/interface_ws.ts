@@ -22,7 +22,7 @@ class InterfaceWS {
                   const data = await axios.get(_url_);
 
                   if (data.statusText.toLowerCase() === "ok") {
-                        return { error: false, data: [...data.data.results] };
+                        return { error: false, data: data.data };
                   } else {
                         throw Error("Could not fetch the data!");
                   }
@@ -39,6 +39,16 @@ class InterfaceWS {
             const year = date.getFullYear();
 
             const result = await this.communication("games", `&dates=${year}-01-01,${year}-12-31&page_size=21&ordering=-rating`);
+
+            if (result.error) {
+                  return result;
+            } else {
+                  return { error: false, data: result.data.results };
+            }
+      };
+
+      game_detail = async (gameID: string | string[]) => {
+            const result = await this.communication(`games/${gameID}`, "");
 
             return result;
       };
