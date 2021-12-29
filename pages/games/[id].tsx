@@ -7,6 +7,9 @@ import Head from "next/head";
 // WS
 import commWS from "../../interface/interface_ws";
 
+// COMPONENTS
+import GameDetails from "../../components/Games/GameDetails";
+
 const GameDetail: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
       const router = useRouter();
 
@@ -25,7 +28,7 @@ const GameDetail: NextPage = (props: InferGetStaticPropsType<typeof getStaticPro
                   </Head>
 
                   <main>
-                        <h1>{props.currentGame.data.name}</h1>
+                        <GameDetails gameInfo={props.currentGame} />
                   </main>
             </div>
       );
@@ -61,7 +64,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
             props: {
                   currentGame: result,
             },
-            revalidate: 86400, //24h
+            revalidate: 604800, // 1 week
       };
 };
 

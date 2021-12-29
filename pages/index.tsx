@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
             props: {
                   currentGames: result,
             },
-            revalidate: 86400, //24h
+            revalidate: 604800, // 1 week
       };
 };
 

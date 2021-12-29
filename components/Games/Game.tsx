@@ -35,7 +35,7 @@ const Game = (props: GameProps) => {
       };
 
       const handleClick = (gameID: number) => {
-            router.push(`./game/${gameID}`);
+            router.push(`./games/${gameID}`);
       };
 
       const handleMouseEnter = () => {
