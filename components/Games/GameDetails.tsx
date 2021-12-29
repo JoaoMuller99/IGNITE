@@ -1,26 +1,8 @@
-import Image from "next/image";
-
 // COMPONENTS
 import Layout from "../UI/Layout";
-
-// IMAGES
-import PcLogo from "../../public/img/pc.png";
-import XboxLogo from "../../public/img/xbox.png";
-import PlaystationLogo from "../../public/img/playstation.png";
-import DefaultLogo from "../../public/img/default.png";
-
-interface Publishers {
-      id: number;
-      name: string;
-      image_background: string;
-}
-
-interface Platforms {
-      platform: {
-            id: number;
-            name: string;
-      };
-}
+import PublishersList from "./PublishersList";
+import PlatformsList from "./PlatformsList";
+import RedditInfo from "./RedditInfo";
 
 interface GameInfo {
       gameInfo: {
@@ -29,8 +11,8 @@ interface GameInfo {
                   name: string;
                   description_raw: string;
                   website: string;
-                  publishers: Publishers[];
-                  parent_platforms: Platforms[];
+                  publishers: [];
+                  parent_platforms: [];
                   reddit_name: string;
                   reddit_description: string;
                   reddit_logo: string;
@@ -41,23 +23,6 @@ interface GameInfo {
 }
 
 const GameDetails = (props: GameInfo) => {
-      const platformLogoHandler = (platform: string) => {
-            switch (platform) {
-                  case "PC":
-                        return PcLogo;
-                        break;
-                  case "Xbox":
-                        return XboxLogo;
-                        break;
-                  case "PlayStation":
-                        return PlaystationLogo;
-                        break;
-                  default:
-                        return DefaultLogo;
-                        break;
-            }
-      };
-
       return (
             <>
                   {props.gameInfo.error === false && (
@@ -78,55 +43,29 @@ const GameDetails = (props: GameInfo) => {
                               {props.gameInfo.data.website && (
                                     <>
                                           <hr />
-                                          <p>Website: {props.gameInfo.data.website}</p>
+
+                                          <p>
+                                                Website:{" "}
+                                                <a href={props.gameInfo.data.website} rel="noreferrer" target="_blank">
+                                                      {props.gameInfo.data.website}
+                                                </a>
+                                          </p>
                                     </>
                               )}
 
-                              {props.gameInfo.data.publishers.length !== 0 && (
-                                    <>
-                                          <hr />
-                                          {props.gameInfo.data.publishers.map((publisher) => {
-                                                return (
-                                                      <div key={publisher.id}>
-                                                            <p>{publisher.name}</p>
-                                                            {publisher.image_background && (
-                                                                  <Image src={publisher.image_background} width="100px" height="100px" alt={publisher.name} />
-                                                            )}
-                                                      </div>
-                                                );
-                                          })}
-                                    </>
-                              )}
+                              <hr />
+                              <PublishersList publishers={props.gameInfo.data.publishers} />
 
-                              {props.gameInfo.data.parent_platforms.length !== 0 && (
-                                    <>
-                                          <hr />
-                                          {props.gameInfo.data.parent_platforms.map((parentPlatform) => {
-                                                return (
-                                                      <Image
-                                                            key={parentPlatform.platform.id}
-                                                            src={platformLogoHandler(parentPlatform.platform.name)}
-                                                            width="35px"
-                                                            height="35px"
-                                                            title={parentPlatform.platform.name}
-                                                            alt={parentPlatform.platform.name}
-                                                      />
-                                                );
-                                          })}
-                                    </>
-                              )}
+                              <hr />
+                              <PlatformsList platforms={props.gameInfo.data.parent_platforms} />
 
-                              {props.gameInfo.data.reddit_url && (
-                                    <>
-                                          <hr />
-                                          {props.gameInfo.data.reddit_logo && (
-                                                <Image src={props.gameInfo.data.reddit_logo} width="33px" height="28px" alt="Reddit" />
-                                          )}
-                                          <p>{props.gameInfo.data.reddit_name}</p>
-                                          <p>{props.gameInfo.data.reddit_description}</p>
-                                          <p>{props.gameInfo.data.reddit_url}</p>
-                                    </>
-                              )}
+                              <hr />
+                              <RedditInfo
+                                    logo={props.gameInfo.data.reddit_logo}
+                                    name={props.gameInfo.data.reddit_name}
+                                    description={props.gameInfo.data.reddit_description}
+                                    url={props.gameInfo.data.reddit_url}
+                              />
                         </Layout>
                   )}
             </>
