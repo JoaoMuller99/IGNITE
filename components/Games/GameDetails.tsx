@@ -1,8 +1,14 @@
+import { motion } from "framer-motion";
+
 // COMPONENTS
 import Layout from "../UI/Layout";
+import GameInfo from "./GameInfo";
 import PublishersList from "./PublishersList";
 import PlatformsList from "./PlatformsList";
 import RedditInfo from "./RedditInfo";
+
+// STYLES
+import styles from "./GameDetails.module.scss";
 
 interface GameInfo {
       gameInfo: {
@@ -27,29 +33,22 @@ const GameDetails = (props: GameInfo) => {
             <>
                   {props.gameInfo.error === false && (
                         <Layout>
-                              {props.gameInfo.data.name && <h1>{props.gameInfo.data.name}</h1>}
+                              <motion.section className={styles.container}>
+                                    <GameInfo
+                                          gameName={props.gameInfo.data.name}
+                                          gameDescription={props.gameInfo.data.description_raw}
+                                          gameWebsite={props.gameInfo.data.website}
+                                    />
 
-                              {props.gameInfo.data.description_raw && <p>{props.gameInfo.data.description_raw}</p>}
-
-                              {props.gameInfo.data.website && (
-                                    <>
-                                          <p>
-                                                Website:{" "}
-                                                <a href={props.gameInfo.data.website} rel="noreferrer" target="_blank">
-                                                      {props.gameInfo.data.website}
-                                                </a>
-                                          </p>
-                                    </>
-                              )}
-
-                              <PublishersList publishers={props.gameInfo.data.publishers} />
-                              <PlatformsList platforms={props.gameInfo.data.parent_platforms} />
-                              <RedditInfo
-                                    logo={props.gameInfo.data.reddit_logo}
-                                    name={props.gameInfo.data.reddit_name}
-                                    description={props.gameInfo.data.reddit_description}
-                                    url={props.gameInfo.data.reddit_url}
-                              />
+                                    <PublishersList publishers={props.gameInfo.data.publishers} />
+                                    <PlatformsList platforms={props.gameInfo.data.parent_platforms} />
+                                    <RedditInfo
+                                          logo={props.gameInfo.data.reddit_logo}
+                                          name={props.gameInfo.data.reddit_name}
+                                          description={props.gameInfo.data.reddit_description}
+                                          url={props.gameInfo.data.reddit_url}
+                                    />
+                              </motion.section>
                         </Layout>
                   )}
             </>

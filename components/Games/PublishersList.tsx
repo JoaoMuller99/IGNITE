@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+// LIBRARIES
+import { motion } from "framer-motion";
+
 interface Publishers {
       id: number;
       name: string;
@@ -13,17 +16,20 @@ interface PublishersList {
 const PublishersList = (props: PublishersList) => {
       return (
             <>
-                  {props.publishers.length !== 0 &&
-                        props.publishers.map((publisher) => {
-                              return (
-                                    <div key={publisher.id}>
-                                          <p>{publisher.name}</p>
-                                          {publisher.image_background && (
-                                                <Image src={publisher.image_background} width="100px" height="100px" alt={publisher.name} />
-                                          )}
-                                    </div>
-                              );
-                        })}
+                  {props.publishers.length !== 0 && (
+                        <motion.div>
+                              {props.publishers.map((publisher) => {
+                                    return (
+                                          <div key={publisher.id}>
+                                                <p>{publisher.name}</p>
+                                                {publisher.image_background && (
+                                                      <Image src={publisher.image_background} width="100px" height="100px" alt={publisher.name} />
+                                                )}
+                                          </div>
+                                    );
+                              })}
+                        </motion.div>
+                  )}
             </>
       );
 };

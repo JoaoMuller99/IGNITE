@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
-// Libraries
+// LIBRARIES
 import { motion } from "framer-motion";
 import gsap from "gsap";
 
-// Styles
+// STYLES
 import styles from "./Game.module.scss";
 
 interface GameProps {
@@ -24,7 +24,6 @@ interface Screenshots {
 
 const Game = (props: GameProps) => {
       const imgContainer = useRef<HTMLDivElement>(null);
-      const router = useRouter();
 
       const handleFinish = () => {
             const length = (imgContainer.current?.children || []).length;
@@ -34,18 +33,19 @@ const Game = (props: GameProps) => {
             }
       };
 
-      const handleClick = (gameID: number) => {
-            router.push(`./games/${gameID}`);
-      };
-
       const handleMouseEnter = () => {
             const timeline = gsap.timeline();
             const length = (imgContainer.current?.children || []).length;
 
-            timeline.to(imgContainer.current?.children[0]!, { opacity: 0, duration: 0 });
+            if (length > 2) {
+                  timeline.to(imgContainer.current?.children[0]!, { opacity: 0, duration: 0 });
+                  timeline.to(imgContainer.current?.children[1]!, { opacity: 0, duration: 1.3 });
+            }
 
-            for (let i = 1; i < length - 1; i++) {
-                  timeline.to(imgContainer.current?.children[i]!, { opacity: 0, duration: 1.3 });
+            for (let i = 2; i < length - 1; i++) {
+                  if (imgContainer.current?.children[i]!.classList.contains("loaded")) {
+                        timeline.to(imgContainer.current?.children[i]!, { opacity: 0, duration: 1.3 });
+                  }
             }
 
             const killTimeline = () => {
@@ -57,20 +57,46 @@ const Game = (props: GameProps) => {
             imgContainer.current?.addEventListener("mouseleave", killTimeline);
       };
 
+      const handleImageLoaded = (elementId: string) => {
+            document.getElementById(elementId)?.classList.add("loaded");
+      };
+
       return (
             <motion.div className={styles.container} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <h2 className={styles.h2}>{props.name}</h2>
                   <p className={styles.p}>{props.released}</p>
-                  <div ref={imgContainer} className={styles.imgContainer} onClick={() => handleClick(props.id)} onMouseEnter={handleMouseEnter}>
-                        <Image className={styles.img} src={props.backgroundImage} alt="Game Image" width="1024" height="720" />
-                        {props.screenshots.map((screenshot: Screenshots, index: number) => {
-                              return (
-                                    <div key={screenshot.id} className={styles.carouselContainer} style={{ zIndex: 9 - index }}>
-                                          <Image className={styles.screenshots} src={screenshot.image} alt="Screenshot" width="1024" height="720" />
-                                    </div>
-                              );
-                        })}
-                  </div>
+                  <Link href={`/games/${props.id}`} scroll={false} passHref>
+                        <motion.div ref={imgContainer} className={styles.imgContainer} onMouseEnter={handleMouseEnter}>
+                              <Image
+                                    className={styles.img}
+                                    src={props.backgroundImage}
+                                    alt="Game Image"
+                                    width="1024"
+                                    height="720"
+                                    placeholder="blur"
+                                    blurDataURL={props.backgroundImage}
+                              />
+                              {props.screenshots.map((screenshot: Screenshots, index: number) => {
+                                    return (
+                                          <div
+                                                key={screenshot.id}
+                                                id={screenshot.id.toString()}
+                                                className={styles.carouselContainer}
+                                                style={{ zIndex: 9 - index }}
+                                          >
+                                                <Image
+                                                      className={styles.screenshots}
+                                                      src={screenshot.image}
+                                                      alt="Screenshot"
+                                                      width="1024"
+                                                      height="720"
+                                                      onLoadingComplete={() => handleImageLoaded(screenshot.id.toString())}
+                                                />
+                                          </div>
+                                    );
+                              })}
+                        </motion.div>
+                  </Link>
             </motion.div>
       );
 };

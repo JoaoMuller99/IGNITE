@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+// LIBRARIES
+import { motion } from "framer-motion";
+
 // IMAGES
 import PcLogo from "../../public/img/pc.png";
 import XboxLogo from "../../public/img/xbox.png";
@@ -37,19 +40,22 @@ const PlatformsList = (props: PlatformsList) => {
 
       return (
             <>
-                  {props.platforms.length !== 0 &&
-                        props.platforms.map((parentPlatform) => {
-                              return (
-                                    <Image
-                                          key={parentPlatform.platform.id}
-                                          src={platformLogoHandler(parentPlatform.platform.name)}
-                                          width="35px"
-                                          height="35px"
-                                          title={parentPlatform.platform.name}
-                                          alt={parentPlatform.platform.name}
-                                    />
-                              );
-                        })}
+                  {props.platforms.length !== 0 && (
+                        <motion.div>
+                              {props.platforms.map((parentPlatform) => {
+                                    return (
+                                          <Image
+                                                key={parentPlatform.platform.id}
+                                                src={platformLogoHandler(parentPlatform.platform.name)}
+                                                width="35px"
+                                                height="35px"
+                                                title={parentPlatform.platform.name}
+                                                alt={parentPlatform.platform.name}
+                                          />
+                                    );
+                              })}
+                        </motion.div>
+                  )}
             </>
       );
 };
