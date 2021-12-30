@@ -3,7 +3,7 @@ import { GetStaticProps } from "next";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 
-// Components
+// COMPONENTS
 import List from "../components/Games/List";
 
 // WS
