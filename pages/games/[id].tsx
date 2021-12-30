@@ -23,8 +23,6 @@ const GameDetail: NextPage = (props: InferGetStaticPropsType<typeof getStaticPro
             return <h1>Loading...</h1>;
       }
 
-      console.log(props.currentGame);
-
       return (
             <>
                   <Head>
